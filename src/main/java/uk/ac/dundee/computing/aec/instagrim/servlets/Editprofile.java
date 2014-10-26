@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package uk.ac.dundee.computing.aec.instagrim.servlets;
 
 import com.datastax.driver.core.Cluster;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,68 +21,50 @@ import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 
 /**
  *
- * @author Administrator
+ * @author Babak - Pc
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login"})
-public class Login extends HttpServlet {
-
+@WebServlet(name = "Editprofile", urlPatterns = {"/Editprofile"})
+public class Editprofile extends HttpServlet {
     Cluster cluster=null;
-
-
     public void init(ServletConfig config) throws ServletException {
         // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        String profiletitle=request.getParameter("profiletitle");
         String username=request.getParameter("username");
-        String password=request.getParameter("password");
-         String profiletitle=request.getParameter("profiletitle");
+        HttpSession session=request.getSession();
         
         User us=new User();
+        
         us.setCluster(cluster);
-        boolean isValid=us.IsValidUser(username, password);
-        HttpSession session=request.getSession();
-        System.out.println("Session in servlet "+session);
-        if (isValid){
-            LoggedIn lg= new LoggedIn();
-            lg.setLogedin();
-            lg.setUsername(username);
-            lg.setProfileTitle(us.SelectProfileTitle(username));
-            
-            //request.setAttribute("LoggedIn", lg);
-            
-            session.setAttribute("LoggedIn", lg);
-            session.setAttribute("profiletitle", profiletitle);
-            System.out.println("Session in servlet "+session);
-            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
-	    rd.forward(request,response);
-            
-        }else{
-            response.sendRedirect("/Instagrim/login.jsp");
-        }
+        
+        
+        us.SelectProfileTitle(username);
+        us.UpdateUser(profiletitle, username);
+        
+         String name = request.getParameter( "username" );
+   session.setAttribute( "username", name );
+String profile = request.getParameter( "profiletitle" );
+   session.setAttribute( "profiletitle", profile );
+       
+	response.sendRedirect("/Instagrim/Images/" + username);
         
     }
+   
+    
+    }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
-}
+

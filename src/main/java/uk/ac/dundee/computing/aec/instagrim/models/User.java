@@ -16,6 +16,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import uk.ac.dundee.computing.aec.instagrim.lib.AeSimpleSHA1;
 import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
+import java.util.*;
 
 /**
  *
@@ -60,17 +61,30 @@ public class User {
         
     }
     
-    public void SelectUser(String login)
-    {
-        Session session=cluster.connect("instagrim");
-        PreparedStatement ps = session.prepare("SELECT profiletitle from userprofiles where login in(?)");
+   public String SelectProfileTitle(String username){
+       Session session = cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("select profiletitle from userprofiles where login =?");
+        ResultSet rs = null;
         BoundStatement boundStatement = new BoundStatement(ps);
-        ResultSet rs= null;
-        rs= session.execute(
-        boundStatement.bind(
-        login));
-        
-    }
+        rs = session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        username));
+        String profileTitle="";
+        if (rs.isExhausted()) {
+            System.out.println("No Images returned");
+            return profileTitle;
+            
+        } else {
+            for (Row row : rs) {
+               
+                profileTitle = row.getString("profiletitle");
+                System.out.println(profileTitle);
+                return profileTitle;
+            }
+   }
+        return profileTitle;
+   }
+   
     
     public boolean IsValidUser(String username, String Password){
         AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();

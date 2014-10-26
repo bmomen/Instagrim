@@ -7,6 +7,7 @@
 <%@page import="java.util.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="uk.ac.dundee.computing.aec.instagrim.stores.*" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,6 +31,7 @@
  
         <article>
             <h1>Your Pics</h1>
+            
         <%
             java.util.LinkedList<Pic> lsPics = (java.util.LinkedList<Pic>) request.getAttribute("Pics");
             if (lsPics == null) {
@@ -44,11 +46,21 @@
 
         %>
         <a href="/Instagrim/Image/<%=p.getSUUID()%>" ><img src="/Instagrim/Thumb/<%=p.getSUUID()%>"></a><br/><%
+            
 
             }
             }
         %>
+        <%
+            
+           
+            
+            String profileTitle = (String)session.getAttribute("profiletitle");
+            %>
         </article>
+       
+        <h1><%=profileTitle%></h1> 
+        
         <footer>
             <ul>
                 <li class="footer"><a href="/Instagrim">Home</a></li>

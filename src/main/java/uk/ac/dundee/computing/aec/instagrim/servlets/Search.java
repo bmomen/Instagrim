@@ -23,8 +23,8 @@ import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
  *
  * @author Babak - Pc
  */
-@WebServlet(name = "Profile", urlPatterns = {"/Profile"})
-public class Profile extends HttpServlet {
+@WebServlet(name = "Search", urlPatterns = {"/Search"})
+public class Search extends HttpServlet {
     Cluster cluster=null;
     public void init(ServletConfig config) throws ServletException {
         // TODO Auto-generated method stub
@@ -42,18 +42,22 @@ public class Profile extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String profiletitle=request.getParameter("profiletitle");
         String username=request.getParameter("username");
-        HttpSession session=request.getSession();
         
         User us=new User();
-        us.setCluster(cluster);
-        us.UpdateUser(username, profiletitle);
-        us.SelectUser(username);
         
-	response.sendRedirect("profile.jsp");
+        us.setCluster(cluster);
+      
+        
+        Object ProfileTitle = us.SelectProfileTitle(username);
+        request.getSession().setAttribute("profiletitle", ProfileTitle);
+        
+       
+	response.sendRedirect("/Instagrim/Images/" + username);
         
     }
+   
+    
     }
 
 
