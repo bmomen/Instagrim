@@ -14,8 +14,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
 import uk.ac.dundee.computing.aec.instagrim.models.User;
+import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 
 /**
  *
@@ -42,12 +44,14 @@ public class Profile extends HttpServlet {
             throws ServletException, IOException {
         String profiletitle=request.getParameter("profiletitle");
         String username=request.getParameter("username");
+        HttpSession session=request.getSession();
         
         User us=new User();
         us.setCluster(cluster);
         us.UpdateUser(username, profiletitle);
+        us.SelectUser(username);
         
-	response.sendRedirect("/Instagrim");
+	response.sendRedirect("profile.jsp");
         
     }
     }

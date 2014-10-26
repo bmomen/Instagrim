@@ -14,3 +14,9 @@ nav {
     border: 2px;
     float: right;
 }
+
+h1 {
+    text-align:center;
+    border:2px;
+    font-size:20pt;
+}

@@ -57,6 +57,19 @@ public class User {
         rs= session.execute(
         boundStatement.bind(
         newtitle,login));
+        
+    }
+    
+    public void SelectUser(String login)
+    {
+        Session session=cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("SELECT profiletitle from userprofiles where login in(?)");
+        BoundStatement boundStatement = new BoundStatement(ps);
+        ResultSet rs= null;
+        rs= session.execute(
+        boundStatement.bind(
+        login));
+        
     }
     
     public boolean IsValidUser(String username, String Password){
