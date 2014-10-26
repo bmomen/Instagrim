@@ -17,6 +17,7 @@
     <body>
         <header>
             <h1>InstaGrim ! </h1>
+            
             <h2>Your world in Black and White</h2>
         </header>
         <nav>
@@ -29,10 +30,12 @@
                         LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
                         if (lg != null) {
                             String UserName = lg.getUsername();
-                            if (lg.getlogedin()) {
+                            if (lg.getloggedin()) {
                     %>
 
                 <li><a href="/Instagrim/Images/<%=lg.getUsername()%>">Your Images</a></li>
+                <li><a href="logout.jsp">Logout</a></li>
+                <li><a href="profile.jsp">Profile</a></li>
                     <%}
                             }else{
                                 %>

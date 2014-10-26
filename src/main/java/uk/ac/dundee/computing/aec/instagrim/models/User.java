@@ -48,6 +48,17 @@ public class User {
         return true;
     }
     
+    public void UpdateUser(String newtitle, String login)
+    {
+        Session session=cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("UPDATE userprofiles SET profiletitle=? where login=?");
+        BoundStatement boundStatement = new BoundStatement(ps);
+        ResultSet rs= null;
+        rs= session.execute(
+        boundStatement.bind(
+        newtitle,login));
+    }
+    
     public boolean IsValidUser(String username, String Password){
         AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
         String EncodedPassword=null;
