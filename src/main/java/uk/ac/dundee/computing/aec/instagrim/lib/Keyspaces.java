@@ -45,7 +45,7 @@ public final class Keyspaces {
                     + "      login text PRIMARY KEY,\n"
                      + "     password text,\n"
                     + "      profiletitle text,\n"
-                    + "      last_name text,\n"
+                    + "      profiledata text,\n"
                     + "      email set<text>,\n"
                     + "      addresses  map<text, frozen <address>>\n"
                     + "  );";

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package uk.ac.dundee.computing.aec.instagrim.servlets;
 
 import com.datastax.driver.core.Cluster;
@@ -27,10 +26,9 @@ import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
  */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
-
-    Cluster cluster=null;
-
-
+    
+    Cluster cluster = null;
+    
     public void init(ServletConfig config) throws ServletException {
         // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
@@ -48,30 +46,29 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String username=request.getParameter("username");
-        String password=request.getParameter("password");
-         String profiletitle=request.getParameter("profiletitle");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String profiletitle = request.getParameter("profiletitle");
         
-        User us=new User();
+        User us = new User();
         us.setCluster(cluster);
-        boolean isValid=us.IsValidUser(username, password);
-        HttpSession session=request.getSession();
-        System.out.println("Session in servlet "+session);
-        if (isValid){
-            LoggedIn lg= new LoggedIn();
+        boolean isValid = us.IsValidUser(username, password);
+        HttpSession session = request.getSession();
+        System.out.println("Session in servlet " + session);
+        if (isValid) {
+            LoggedIn lg = new LoggedIn();
             lg.setLogedin();
             lg.setUsername(username);
             lg.setProfileTitle(us.SelectProfileTitle(username));
-            
+
             //request.setAttribute("LoggedIn", lg);
-            
             session.setAttribute("LoggedIn", lg);
             session.setAttribute("profiletitle", profiletitle);
-            System.out.println("Session in servlet "+session);
-            RequestDispatcher rd=request.getRequestDispatcher("index.jsp");
-	    rd.forward(request,response);
+            System.out.println("Session in servlet " + session);
+            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+            rd.forward(request, response);
             
-        }else{
+        } else {
             response.sendRedirect("/Instagrim/login.jsp");
         }
         

@@ -25,7 +25,9 @@ import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
  */
 @WebServlet(name = "Editprofile", urlPatterns = {"/Editprofile"})
 public class Editprofile extends HttpServlet {
-    Cluster cluster=null;
+
+    Cluster cluster = null;
+
     public void init(ServletConfig config) throws ServletException {
         // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
@@ -42,29 +44,28 @@ public class Editprofile extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String profiletitle=request.getParameter("profiletitle");
-        String username=request.getParameter("username");
-        HttpSession session=request.getSession();
-        
-        User us=new User();
-        
+        String profiletitle = request.getParameter("profiletitle");
+        String username = request.getParameter("username");
+        String profiledata = request.getParameter("profiledata");
+        HttpSession session = request.getSession();
+
+        User us = new User();
+
         us.setCluster(cluster);
-        
-        
+
         us.SelectProfileTitle(username);
-        us.UpdateUser(profiletitle, username);
-        
-         String name = request.getParameter( "username" );
-   session.setAttribute( "username", name );
-String profile = request.getParameter( "profiletitle" );
-   session.setAttribute( "profiletitle", profile );
-       
-	response.sendRedirect("/Instagrim/Images/" + username);
-        
+        us.UpdateTitle(profiletitle, username);
+        us.UpdateData(profiledata, username);
+
+        String name = request.getParameter("username");
+        session.setAttribute("username", name);
+        String profile = request.getParameter("profiletitle");
+        session.setAttribute("profiletitle", profile);
+        String data = request.getParameter("profiledata");
+        session.setAttribute("profiledata", data);
+
+        response.sendRedirect("/Instagrim/Images/" + username);
+
     }
-   
-    
-    }
 
-
-
+}

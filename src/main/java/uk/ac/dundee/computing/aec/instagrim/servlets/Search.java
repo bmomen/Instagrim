@@ -25,7 +25,9 @@ import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
  */
 @WebServlet(name = "Search", urlPatterns = {"/Search"})
 public class Search extends HttpServlet {
-    Cluster cluster=null;
+
+    Cluster cluster = null;
+
     public void init(ServletConfig config) throws ServletException {
         // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
@@ -42,23 +44,19 @@ public class Search extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username=request.getParameter("username");
-        
-        User us=new User();
-        
+        String username = request.getParameter("username");
+
+        User us = new User();
+
         us.setCluster(cluster);
-      
-        
+
         Object ProfileTitle = us.SelectProfileTitle(username);
+        Object ProfileData = us.SelectProfileData(username);
         request.getSession().setAttribute("profiletitle", ProfileTitle);
-        
-       
-	response.sendRedirect("/Instagrim/Images/" + username);
-        
-    }
-   
-    
+        request.getSession().setAttribute("profiledata", ProfileData);
+
+        response.sendRedirect("/Instagrim/Images/" + username);
+
     }
 
-
-
+}
